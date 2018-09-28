@@ -3,8 +3,9 @@
 *.pdf
 **/__pycache__
 **/*.pyc
+**/*.log
 **/creds
-**/staticfiles
+**/static_collected
 /venv
 personal_site/logs/*
 personal_site/daemons/*
@@ -26,7 +27,6 @@ pgdata_sentry
 htmlcov
 pgdata*
 .vagrant
-static
 
 .env
 backups

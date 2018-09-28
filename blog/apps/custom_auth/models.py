@@ -9,4 +9,3 @@ class User(AbstractUser):
                             choices=RoleTypes.Choices,
                             default=RoleTypes.COMMON)
 
-# Create your models here.

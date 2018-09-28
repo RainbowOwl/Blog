@@ -1,0 +1,17 @@
+<h1>Posts</h1>
+
+
+<div>
+    {% for post in object_list%}
+    <div class='post'>
+        <div class='post-title'>
+            {{ post.title }}
+        </div>
+        <div class='post-content'>
+            <div class='post-options'>
+                {{ post.created }} : {{ post.is_draft }}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>

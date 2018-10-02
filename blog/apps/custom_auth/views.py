@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.views.generic.base import RedirectView
 from django.views.generic.edit import FormView
 
-from apps.custom_auth.forms import LoginForm
+from apps.custom_auth.forms import LoginForm, RegistrationForm
 
 
 class LoginView(FormView):
@@ -21,3 +21,16 @@ class LoginView(FormView):
 
     def get_success_url(self):
         return reverse('blog:index')
+
+class RegistrationView(FormView):
+    template_name = 'registration.html'
+    form_class = RegistrationForm
+
+    def register_page(request):
+        if request.method == 'POST':
+            form = RegistrationForm(request.POST)
+            if form.is_valid():
+                user = user.objects.create_user(username=form.cleaned_data['username'],
+                                                password=form.cleaned_data['password1'],
+                                                email=form.cleaned_data['email'])
+                return reverse('blog:index')

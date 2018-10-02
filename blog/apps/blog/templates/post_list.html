@@ -1,0 +1,37 @@
+{% extends 'index.html' %}
+{% block content %}
+    <a href='{% url "blog:post-create" %}'>Add post</a>
+
+    <div class='row'>
+        <div class='col-md-offset-3 col-md-6'>
+            <form method='GET' action=''>
+                <input type="text" name="q" class="form-control input-lg"
+                       placeholder="search text..." value="{{ request.GET.q }}">
+            </form>
+
+            {% for post in posts %}
+                <h4>{{ post.title }}</h4>
+                <div>
+                    {{ post.created }} {{ post.is_draft }}
+                    (<a href='{% url "blog:post-detail" pk=post.id %}'>detail</a>
+                    <a href='{% url "blog:post-edit" pk=post.id %}'>edit</a>
+                    <a href='{% url "blog:post-delete" pk=post.id %}'>delete</a>)
+                </div>
+                <p>{{ post.content }}</p>
+            {% endfor %}
+            {% if is_paginated %}
+                <div class="pagination">
+                    {% if page_obj.has_previous %}
+                        <a href="{% url 'blog:index' %}?page={{ page_obj.previous_page_number }}">previous</a>
+                    {% endif %}
+                    <span class="page-current">
+                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                    </span>
+                    {% if page_obj.has_next %}
+                        <a href="{% url 'blog:index' %}?page={{ page_obj.next_page_number }}">next</a>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock content %}

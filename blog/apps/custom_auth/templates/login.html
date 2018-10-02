@@ -1,0 +1,13 @@
+{% extends 'base_auth.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <form action='' method='POST'>
+        {% csrf_token %}
+        <ul>
+            {{ form|crispy }}
+        </ul>
+        <input class='btn btn-default pull-right'
+               type='submit' value='Login'/>
+    </form>
+{% endblock content %}

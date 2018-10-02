@@ -1,11 +1,11 @@
 from django.contrib import admin
 from apps.blog.models import Post, Tag, Like
+from blog.admin import portfolio_admin_site, PorfolioModelAdmin
 
 
-@admin.register(Post)
-class PostAdmin(admin.ModelAdmin):
+class PostAdmin(PorfolioModelAdmin):
 
-    list_display = ('title', 'content', 'created')
+    list_display = ('edit_link', 'title', 'content', 'created')
     list_filter = ('title', 'content')
     list_select_related = ('author',)
     ordering = ('created',)
@@ -15,13 +15,14 @@ class PostAdmin(admin.ModelAdmin):
         model = Post
 
 
-@admin.register(Tag)
-class TagAdmin(admin.ModelAdmin):
+class TagAdmin(PorfolioModelAdmin):
     class Meta:
         model = Tag
 
-@admin.register(Like)
-class LikeAdmin(admin.ModelAdmin):
+class LikeAdmin(PorfolioModelAdmin):
     class Meta:
         model = Like
 
+portfolio_admin_site.register(Post, PostAdmin)
+portfolio_admin_site.register(Tag, TagAdmin)
+portfolio_admin_site.register(Like, LikeAdmin)

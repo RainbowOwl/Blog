@@ -3,7 +3,9 @@ from django.urls import reverse
 from django.views.generic import (CreateView, DeleteView, DetailView, ListView, TemplateView,
 UpdateView)
 
-from apps.blog.models import Post, Tag, Like
+from apps.blog.models import Post, Tag
+from apps.blog.mixins import RoleVerificationMixin
+from apps.custom_auth.enums import RoleTypes
 
 
 class ListPostView(ListView):
@@ -11,6 +13,7 @@ class ListPostView(ListView):
     template_name = 'post_list.html'
     context_object_name = 'posts'
     paginate_by = 4
+
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -23,10 +26,11 @@ class ListPostView(ListView):
             self.paginate_by = None
         return queryset
 
-class CreatePostView(CreateView):
+class CreatePostView(RoleVerificationMixin, CreateView):
     model = Post
     fields = ('title', 'content', 'is_draft', 'tags')
     template_name = 'post_edit.html'
+    role_types = (RoleTypes.ADMINISTRATOR, RoleTypes.MANAGER)
 
     def get_success_url(self):
         return reverse('blog:index')
@@ -36,11 +40,11 @@ class CreatePostView(CreateView):
         context['action'] = reverse('blog:post-create')
         return context
 
-
-class UpdatePostView(UpdateView):
+class UpdatePostView(RoleVerificationMixin, UpdateView):
     model = Post
     template_name = 'post_edit.html'
     fields = ('title', 'content', 'is_draft', 'tags')
+    role_types = (RoleTypes.ADMINISTRATOR, RoleTypes.MANAGER)
 
     def get_success_url(self):
         return reverse('blog:index')
@@ -51,9 +55,10 @@ class UpdatePostView(UpdateView):
         return context
 
 
-class DeletePostView(DeleteView):
+class DeletePostView(RoleVerificationMixin, DeleteView):
     model = Post
     template_name = 'post_delete.html'
+    role_types = (RoleTypes.ADMINISTRATOR)
 
     def get_success_url(self):
         return reverse('blog:index')
